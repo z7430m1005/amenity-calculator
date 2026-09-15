@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>アメニティ・タオル 設置数計算</title>
+<style>
+  :root{
+    --sand:#F6F3EC;
+    --ink:#2B3A3A;
+    --sea:#3E6E6E;
+    --sea-deep:#294B4B;
+    --coral:#D98868;
+    --line:#DEDACD;
+    --card:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--sand);
+    color:var(--ink);
+    font-family:"Hiragino Sans","Yu Gothic",system-ui,sans-serif;
+    line-height:1.6;
+    padding:32px 16px 64px;
+  }
+  .wrap{max-width:640px;margin:0 auto;}
+  h1{
+    font-size:22px;
+    font-weight:700;
+    letter-spacing:.02em;
+    margin:0 0 4px;
+    color:var(--sea-deep);
+  }
+  .sub{
+    color:#6B7A7A;
+    font-size:13px;
+    margin:0 0 28px;
+    border-bottom:1px solid var(--line);
+    padding-bottom:20px;
+  }
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:22px 20px;
+    margin-bottom:20px;
+  }
+  .field{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:10px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .field:last-child{border-bottom:none;}
+  .field label{font-size:14px;color:var(--ink);}
+  .field .hint{display:block;font-size:11px;color:#8A9595;margin-top:2px;}
+  .field input{
+    width:72px;
+    text-align:center;
+    padding:8px 6px;
+    border:1px solid var(--line);
+    border-radius:4px;
+    font-size:15px;
+    color:var(--sea-deep);
+    background:#FBFAF7;
+  }
+  .field input:focus{outline:2px solid var(--sea);outline-offset:1px;}
+  button{
+    width:100%;
+    padding:13px;
+    background:var(--sea);
+    color:#fff;
+    border:none;
+    border-radius:5px;
+    font-size:15px;
+    font-weight:600;
+    letter-spacing:.02em;
+    cursor:pointer;
+    margin-top:6px;
+  }
+  button:hover{background:var(--sea-deep);}
+  #result{display:none;}
+  .group-title{
+    font-size:12px;
+    font-weight:700;
+    color:var(--coral);
+    letter-spacing:.06em;
+    margin:0 0 10px;
+  }
+  .row{
+    display:flex;
+    justify-content:space-between;
+    padding:7px 0;
+    font-size:14px;
+    border-bottom:1px dashed var(--line);
+  }
+  .row:last-child{border-bottom:none;}
+  .row .num{font-weight:700;color:var(--sea-deep);}
+  .note{
+    font-size:11.5px;
+    color:#8A9595;
+    margin-top:16px;
+    padding-top:12px;
+    border-top:1px solid var(--line);
+  }
+  .footer-note{
+    text-align:center;
+    font-size:11px;
+    color:#9BA6A6;
+    margin-top:24px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>アメニティ・タオル設置数計算</h1>
+  <p class="sub">人数と宿泊数を入力すると、必要な設置数を自動で算出します。</p>
+
+  <div class="card">
+    <div class="field">
+      <div><label>大人</label><span class="hint">3〜7歳・0〜2歳以外はすべて大人扱い</span></div>
+      <input type="number" id="adults" min="0" value="0">
+    </div>
+    <div class="field">
+      <div><label>3〜7歳</label></div>
+      <input type="number" id="kids" min="0" value="0">
+    </div>
+    <div class="field">
+      <div><label>0〜2歳</label></div>
+      <input type="number" id="infants" min="0" value="0">
+    </div>
+    <div class="field">
+      <div><label>宿泊数</label></div>
+      <input type="number" id="nights" min="1" value="1">
+    </div>
+  </div>
+
+  <button onclick="calculate()">計算する</button>
+
+  <div class="card" id="result">
+    <div class="group-title">タオル類</div>
+    <div class="row"><span>大人用</span><span class="num" id="r-towel-adult">-</span></div>
+    <div class="row"><span>0〜2歳用</span><span class="num" id="r-towel-infant">-</span></div>
+
+    <div class="group-title" style="margin-top:20px;">アメニティ類</div>
+    <div class="row"><span>歯ブラシ</span><span class="num" id="r-brush">-</span></div>
+    <div class="row"><span>スリッパ</span><span class="num" id="r-slipper">-</span></div>
+    <div class="row"><span>ボディブラシ</span><span class="num" id="r-bodybrush">-</span></div>
+    <div class="row"><span>パジャマ</span><span class="num" id="r-pajama">-</span></div>
+    <div class="row"><span>ヘアブラシ・ヘアバンド・カミソリ</span><span class="num" id="r-hairset">-</span></div>
+    <div class="row"><span>キッズアメニティ(3〜7歳)</span><span class="num" id="r-kidsamenity">-</span></div>
+
+    <div class="group-title" style="margin-top:20px;">コーヒー類</div>
+    <div class="row"><span>コーヒー(3種類 各)</span><span class="num" id="r-coffee">-</span></div>
+    <div class="row"><span>ミルク・砂糖</span><span class="num" id="r-milksugar">-</span></div>
+
+    <div class="note">
+      歯ブラシは3〜7歳を除く人数で計算(キッズアメニティに歯ブラシが含まれるため)。<br>
+      ヘアブラシ・ヘアバンド・カミソリは2人で1セットとして計算。
+    </div>
+  </div>
+
+  <p class="footer-note">澄家 アメニティ計算ツール</p>
+</div>
+
+<script>
+function calculate(){
+  const adults = parseInt(document.getElementById('adults').value) || 0;
+  const kids = parseInt(document.getElementById('kids').value) || 0;
+  const infants = parseInt(document.getElementById('infants').value) || 0;
+  const nights = parseInt(document.getElementById('nights').value) || 0;
+  const totalPeople = adults + kids + infants;
+
+  // タオル類
+  const towelAdult = adults > 0 ? (adults * 2) + (nights > 1 ? adults * (nights - 1) : 0) : 0;
+  const towelInfant = infants > 0 ? infants + (nights > 1 ? infants * (nights - 1) : 0) : 0;
+
+  // アメニティ類
+  const brushCount = (adults + infants) * nights; // 3〜7歳は除外
+  const slipperCount = adults;
+  const bodybrushCount = totalPeople;
+  const pajamaCount = totalPeople * nights;
+  const hairsetCount = Math.ceil((totalPeople * nights) / 2);
+  const kidsAmenityCount = kids * nights;
+
+  // コーヒー類
+  const coffeePerType = 2 * nights;
+  const milkSugarCount = 4 * nights;
+
+  document.getElementById('r-towel-adult').textContent = towelAdult + ' セット';
+  document.getElementById('r-towel-infant').textContent = towelInfant + ' セット';
+  document.getElementById('r-brush').textContent = brushCount + ' 個';
+  document.getElementById('r-slipper').textContent = slipperCount + ' 足';
+  document.getElementById('r-bodybrush').textContent = bodybrushCount + ' 個';
+  document.getElementById('r-pajama').textContent = pajamaCount + ' 着';
+  document.getElementById('r-hairset').textContent = hairsetCount + ' セット';
+  document.getElementById('r-kidsamenity').textContent = kidsAmenityCount + ' セット';
+  document.getElementById('r-coffee').textContent = coffeePerType + ' 個(3種類 各)';
+  document.getElementById('r-milksugar').textContent = milkSugarCount + ' 個';
+
+  document.getElementById('result').style.display = 'block';
+}
+</script>
+</body>
+</html>
