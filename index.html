@@ -24,182 +24,161 @@
     padding:24px 14px 56px;
   }
   .wrap{max-width:560px;margin:0 auto;}
-  h1{
-    font-size:20px;
-    font-weight:700;
-    letter-spacing:.02em;
-    margin:0 0 4px;
-    color:var(--sea-deep);
-  }
-  .sub{
-    color:#6B7A7A;
-    font-size:12.5px;
-    margin:0 0 22px;
-    border-bottom:1px solid var(--line);
-    padding-bottom:18px;
-  }
-  .card{
-    background:var(--card);
-    border:1px solid var(--line);
-    border-radius:6px;
-    padding:18px 18px;
-    margin-bottom:18px;
-  }
-  .field{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:10px 0;
-    border-bottom:1px solid var(--line);
-    gap:12px;
-  }
+  h1{font-size:20px;font-weight:700;letter-spacing:.02em;margin:0 0 4px;color:var(--sea-deep);}
+  .sub{color:#6B7A7A;font-size:12.5px;margin:0 0 22px;border-bottom:1px solid var(--line);padding-bottom:18px;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:18px;margin-bottom:18px;}
+  .field{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line);gap:12px;}
   .field:last-child{border-bottom:none;}
   .field label{font-size:14px;color:var(--ink);}
   .field .hint{display:block;font-size:11px;color:#8A9595;margin-top:2px;}
-  .field input{
-    width:76px;
-    flex:0 0 auto;
-    text-align:center;
-    padding:9px 6px;
-    border:1px solid var(--line);
-    border-radius:4px;
-    font-size:16px;
-    color:var(--sea-deep);
-    background:#FBFAF7;
-  }
+  .field input[type=number]{width:76px;flex:0 0 auto;text-align:center;padding:9px 6px;border:1px solid var(--line);border-radius:4px;font-size:16px;color:var(--sea-deep);background:#FBFAF7;}
   .field input:focus{outline:2px solid var(--sea);outline-offset:1px;}
-  button{
-    width:100%;
-    padding:14px;
-    background:var(--sea);
-    color:#fff;
-    border:none;
-    border-radius:5px;
-    font-size:15px;
-    font-weight:600;
-    letter-spacing:.02em;
-    cursor:pointer;
-    margin-top:4px;
-  }
+  .field input[type=checkbox]{width:24px;height:24px;accent-color:var(--sea);}
+  button{width:100%;padding:14px;background:var(--sea);color:#fff;border:none;border-radius:5px;font-size:15px;font-weight:600;letter-spacing:.02em;cursor:pointer;margin-top:4px;}
   button:active{background:var(--sea-deep);}
-  #result{display:none;}
-  .row{
-    display:flex;
-    justify-content:space-between;
-    padding:9px 2px;
-    font-size:15px;
-    border-bottom:1px dashed var(--line);
-  }
-  .row:last-child{border-bottom:none;}
-  .row .num{font-weight:700;color:var(--sea-deep);}
-  .empty{
-    font-size:13px;
-    color:#8A9595;
-    text-align:center;
-    padding:12px 0;
-  }
-  .footer-note{
-    text-align:center;
-    font-size:11px;
-    color:#9BA6A6;
-    margin-top:20px;
-  }
+  .pick{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .pick button{padding:28px 10px;font-size:18px;margin:0;}
+  .pick button small{display:block;font-size:11px;font-weight:400;opacity:.85;margin-top:4px;}
+  .back{background:none;color:var(--sea);border:1px solid var(--line);padding:8px;font-size:13px;width:auto;margin:0 0 14px;}
+  .place{font-size:16px;font-weight:700;color:var(--sea-deep);margin:0 0 10px;}
+  .hidden{display:none;}
+  .sec{font-size:12.5px;font-weight:700;color:var(--sea);margin:14px 0 2px;letter-spacing:.04em;}
+  .sec:first-child{margin-top:0;}
+  .row{display:flex;justify-content:space-between;gap:10px;padding:9px 2px;font-size:15px;border-bottom:1px dashed var(--line);}
+  .row .num{font-weight:700;color:var(--sea-deep);white-space:nowrap;}
+  .row .note{display:block;font-size:11.5px;color:#7F8C8C;font-weight:400;}
+  .memo{font-size:12.5px;color:#5E6B6B;background:#FBFAF7;border-left:3px solid var(--coral);padding:8px 10px;margin-top:10px;border-radius:2px;}
+  .empty{font-size:13px;color:#8A9595;text-align:center;padding:12px 0;}
+  .footer-note{text-align:center;font-size:11px;color:#9BA6A6;margin-top:20px;}
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1>アメニティ・タオル自動計算ツール</h1>
-  <p class="sub">人数と宿泊数を入力し、「計算する」を押してください。</p>
+  <p class="sub">施設を選んで、人数と宿泊数を入力し「計算する」を押してください。</p>
 
-  <div class="card">
-    <div class="field">
-      <div><label>大人</label><span class="hint">19歳以上</span></div>
-      <input type="number" id="adults" min="0" step="1" value="0" inputmode="numeric">
-    </div>
-    <div class="field">
-      <div><label>子供</label><span class="hint">8〜18歳</span></div>
-      <input type="number" id="b818" min="0" step="1" value="0" inputmode="numeric">
-    </div>
-    <div class="field">
-      <div><label>子供</label><span class="hint">3〜7歳</span></div>
-      <input type="number" id="k37" min="0" step="1" value="0" inputmode="numeric">
-    </div>
-    <div class="field">
-      <div><label>子供</label><span class="hint">0〜2歳</span></div>
-      <input type="number" id="i02" min="0" step="1" value="0" inputmode="numeric">
-    </div>
-    <div class="field">
-      <div><label>宿泊数</label><span class="hint">泊</span></div>
-      <input type="number" id="nights" min="1" step="1" value="1" inputmode="numeric">
+  <!-- 1. 施設を選ぶ -->
+  <div id="step-pick">
+    <div class="pick">
+      <button onclick="pick('yanbaru')">ヤンバル<small>AO NAKIJIN yanbaru terrace</small></button>
+      <button onclick="pick('amahaji')">アマハジ<small>AO NAKIJIN amahaji terrace</small></button>
     </div>
   </div>
 
-  <button onclick="calculate()">計算する</button>
-
-  <div class="card" id="result">
-    <div id="result-rows"></div>
+  <!-- 2. 人数と宿泊数 -->
+  <div id="step-form" class="hidden">
+    <button class="back" onclick="backToPick()">← 施設を選び直す</button>
+    <p class="place" id="place-name"></p>
+    <div class="card">
+      <div class="field"><div><label>大人</label><span class="hint">19歳以上</span></div><input type="number" id="adults" min="0" step="1" value="0" inputmode="numeric"></div>
+      <div class="field"><div><label>子供</label><span class="hint">8〜18歳</span></div><input type="number" id="b818" min="0" step="1" value="0" inputmode="numeric"></div>
+      <div class="field"><div><label>子供</label><span class="hint">3〜7歳</span></div><input type="number" id="k37" min="0" step="1" value="0" inputmode="numeric"></div>
+      <div class="field"><div><label>子供</label><span class="hint">0〜2歳</span></div><input type="number" id="i02" min="0" step="1" value="0" inputmode="numeric"></div>
+      <div class="field"><div><label>宿泊数</label><span class="hint">泊</span></div><input type="number" id="nights" min="1" step="1" value="1" inputmode="numeric"></div>
+      <div class="field"><div><label>ダイヤモンド会員</label><span class="hint">予定名に「ダイヤモンド」</span></div><input type="checkbox" id="diamond"></div>
+    </div>
+    <button onclick="calculate()">計算する</button>
+    <div class="card hidden" id="result" style="margin-top:18px">
+      <div id="result-rows"></div>
+    </div>
   </div>
 
-  <p class="footer-note">アメニティ・タオル自動計算ツール</p>
+  <p class="footer-note">設置例：AO NAKIJIN 小林さんのノート（2026/10/21）より</p>
 </div>
-
 <script>
+const PLACES = { yanbaru: 'ヤンバル', amahaji: 'アマハジ' };
+let place = null;
+
+function pick(p){
+  place = p;
+  document.getElementById('place-name').textContent = PLACES[p] + ' の設置数';
+  document.getElementById('step-pick').classList.add('hidden');
+  document.getElementById('step-form').classList.remove('hidden');
+  document.getElementById('result').classList.add('hidden');
+}
+function backToPick(){
+  document.getElementById('step-form').classList.add('hidden');
+  document.getElementById('step-pick').classList.remove('hidden');
+}
+function num(id, min){ return Math.max(min, parseInt(document.getElementById(id).value) || 0); }
+
 function calculate(){
-  const adults = Math.max(0, parseInt(document.getElementById('adults').value) || 0);
-  const b818   = Math.max(0, parseInt(document.getElementById('b818').value) || 0);
-  const k37    = Math.max(0, parseInt(document.getElementById('k37').value) || 0);
-  const i02    = Math.max(0, parseInt(document.getElementById('i02').value) || 0);
-  const nights = Math.max(1, parseInt(document.getElementById('nights').value) || 1);
+  const A = num('adults', 0);   // 大人（19歳以上）
+  const B = num('b818', 0);     // 8〜18歳
+  const K = num('k37', 0);      // 3〜7歳
+  const I = num('i02', 0);      // 0〜2歳
+  const N = num('nights', 1);   // 泊数
+  const diamond = document.getElementById('diamond').checked;
+  const big = A + B;            // アメニティを人数分置く人（大人＋8〜18歳）
+  const over3 = A + B + K;      // 3歳以上
+  const multi = N >= 2;         // 2泊以上
 
-  const bigPeople = adults + b818; // 大人+8〜18歳
-  const towelBase = adults + b818 + k37;
+  // タオル：1人2枚ずつ（0〜2歳は1枚ずつ）。2泊以上は1人1枚ずつ追加
+  const towel = over3 * 2 + I * 1 + (multi ? over3 : 0);
 
-  const bathTowel  = towelBase * (2 + (nights - 1)) + i02 * (1 + (nights - 1));
-  const faceTowel  = bathTowel; // 同じ式
-  const toothbrush = bigPeople * nights;
-  const slipper    = bigPeople;
-  const bodyTowel  = bigPeople;
-  const brushSet   = Math.ceil(bigPeople / 2) * nights; // ブラシ・ヘアバンド・かみそり共通
-  const pajama     = bigPeople * nights;
-  const kidsPajama = k37 * nights;
-  const kidsAmenity= k37; // 宿泊数に関係なく人数分のみ
-  const bathrobe   = adults * 1;
-
-  const items = [
-    ['バスタオル', bathTowel, 'セット'],
-    ['フェイスタオル', faceTowel, 'セット'],
-    ['歯ブラシ', toothbrush, '個'],
-    ['スリッパ', slipper, '足'],
-    ['ボディタオル', bodyTowel, '個'],
-    ['ブラシ', brushSet, '個'],
-    ['ヘアバンド', brushSet, '個'],
-    ['かみそり', brushSet, '個'],
-    ['パジャマ', pajama, '着'],
-    ['キッズパジャマ', kidsPajama, '着'],
-    ['キッズアメニティ', kidsAmenity, 'セット'],
-    ['バスローブ', bathrobe, '着'],
+  const sections = [
+    ['タオル・リネン', [
+      ['バスタオル', towel, '枚', multi ? '2泊以上の追加分を含む' : ''],
+      ['フェイスタオル', towel, '枚', multi ? '2泊以上の追加分を含む' : ''],
+      ['バスローブ', A, '着', A ? '2着はハンガーへ、ほかは寝室へ' : ''],
+      ['パジャマ（大人）', big + (multi && big ? 1 : 0), '着', multi && big ? '2泊以上の予備1セットを含む' : ''],
+      ['キッズパジャマ', K, '着', ''],
+    ]],
+    ['アメニティ', [
+      ['歯ブラシ', big * N, '本', N > 1 ? '泊数分' : ''],
+      ['スリッパ', big, '足', ''],
+      ['ボディタオル', big, '個', ''],
+      ['ヘアブラシ', Math.ceil(big / 2), '個', '2名で1つ'],
+      ['カミソリ', Math.ceil(big / 2), '個', '2名で1つ'],
+      ['ヘアバンド', Math.ceil(big / 2), '個', '2名で1つ'],
+      ['キッズアメニティ', K, 'セット', ''],
+    ]],
+    ['コーヒー', [
+      ['コーヒーポーション', over3 + I > 0 ? (multi ? 12 : 6) : 0, '個', multi ? '3種類×2つ＋2泊目の6個' : '3種類×2つ'],
+      ['砂糖', over3 + I > 0 ? 4 : 0, '個', ''],
+      ['クリープ', over3 + I > 0 ? 4 : 0, '個', ''],
+    ]],
   ];
 
-  const rowsEl = document.getElementById('result-rows');
-  rowsEl.innerHTML = '';
-
-  const visible = items.filter(it => it[1] > 0);
-
-  if (visible.length === 0){
-    const div = document.createElement('div');
-    div.className = 'empty';
-    div.textContent = '人数を入力してください';
-    rowsEl.appendChild(div);
+  // ウェルカムサービス（3歳以上）
+  if (place === 'amahaji') {
+    sections.push(['ウェルカムサービス（3歳以上）', [
+      ['水', over3 * N, '本', '1人1本×泊数'],
+      ['さんぴん茶', over3 * N, '本', '1人1本×泊数'],
+    ]]);
   } else {
-    visible.forEach(([name, qty, unit]) => {
-      const row = document.createElement('div');
-      row.className = 'row';
-      row.innerHTML = '<span>' + name + '</span><span class="num">' + qty + ' ' + unit + '</span>';
-      rowsEl.appendChild(row);
-    });
+    sections.push(['ウェルカムサービス（3歳以上）', [
+      ['水', over3 * N, '本', '1人1本×泊数'],
+      ['ワッタ', A * N, '本', '大人のみ・1人1本×泊数'],
+      ['バヤリース', over3 * N, '本', '1人1本×泊数'],
+      ['黒糖', over3, '個', '1人1つ'],
+      ['ちんすこう', over3, '個', '1人1つ'],
+    ]]);
   }
+  if (diamond) sections.push(['ダイヤモンド会員', [['サービスシャンパン', 1, '本', '冷蔵庫に入れる']]]);
 
-  document.getElementById('result').style.display = 'block';
+  const memos = [];
+  if (big) memos.push('予備のヘアブラシ・カミソリ・ヘアバンドを、掃除機の上のカゴに1つずつ置いておく。');
+  if (place === 'yanbaru' && over3) memos.push('ウェルカムサービスはトレイに入れて、POPスタンドを設置し、テーブルの上に置く。');
+  if (N >= 3) memos.push('3泊以上は、タオル・パジャマを中間清掃で交換する。');
+
+  const el = document.getElementById('result-rows');
+  el.innerHTML = '';
+  let any = false;
+  sections.forEach(([title, items]) => {
+    const shown = items.filter(it => it[1] > 0);
+    if (!shown.length) return;
+    any = true;
+    const h = document.createElement('div'); h.className = 'sec'; h.textContent = title; el.appendChild(h);
+    shown.forEach(([name, qty, unit, note]) => {
+      const row = document.createElement('div'); row.className = 'row';
+      row.innerHTML = '<span>' + name + (note ? '<span class="note">' + note + '</span>' : '') + '</span><span class="num">' + qty + ' ' + unit + '</span>';
+      el.appendChild(row);
+    });
+  });
+  if (!any) { el.innerHTML = '<div class="empty">人数を入力してください</div>'; }
+  memos.forEach(m => { const d = document.createElement('div'); d.className = 'memo'; d.textContent = m; el.appendChild(d); });
+  document.getElementById('result').classList.remove('hidden');
 }
 </script>
 </body>
