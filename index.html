@@ -113,8 +113,9 @@ function calculate(){
   const over3 = A + B + K;      // 3歳以上
   const multi = N >= 2;         // 2泊以上
 
-  // タオル：1人2枚ずつ（0〜2歳は1枚ずつ）。2泊以上は1人1枚ずつ追加
-  const towel = over3 * 2 + I * 1 + (multi ? over3 : 0);
+  // タオル：1人2枚ずつ。2泊以上は1人1枚ずつ追加
+  // 0〜2歳は1泊1枚ずつ×泊数（2泊目以降も1泊ごとに1枚追加。ジン 11/5）
+  const towel = over3 * 2 + I * N + (multi ? over3 : 0);
 
   const sections = [
     ['タオル・リネン', [
